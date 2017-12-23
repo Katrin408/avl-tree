@@ -5,11 +5,8 @@ Created on Fri Nov 10 02:26:42 2017
 @author: Kate
 """
 
-import random
-
 
 class Node:
-
     def __init__(self, value):
         self.value = value
         self.height = 1
@@ -95,11 +92,7 @@ class AVLTree:
 if __name__ == "__main__":
     from drawtree import draw_bst
     tree = AVLTree()
-    values = list(range(16))
-    random.shuffle(values)
-
     for i in range(16):
-        tree.add(values[i])
-
+        tree.add(i)
     tree_ = [node.value for node in tree.to_list()]
     draw_bst(tree_)
