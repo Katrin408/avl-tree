@@ -17,6 +17,9 @@ class AVLTreeNode:
         self.setLeft(None)
         self.setRight(None)
 
+    def __str__(self):
+        return str(self.value)
+
     def getLeft(self):
         return self.left
 
@@ -125,10 +128,42 @@ class AVLTree:
             return self.__rotateRight(node)
         return node
 
+def traverse(root):
+    current_level = [root]
+    while current_level:
+        print(' '.join(str(node) for node in current_level))
+        next_level = []
+        for n in current_level:
+            if n.left:
+                next_level.append(n.left)
+            if n.right:
+                next_level.append(n.right)
+            current_level = next_level
+
+
+def tree_to_list(node):
+    tree = []
+
+    def extract(node):
+        if node:
+            tree.append(node)
+            if node.left:
+                extract(node.left)
+            if node.right:
+                extract(node.right)
+    extract(node)
+
+    return tree
+
 
 if __name__ == "__main__":
     tree = AVLTree()
-    for i in range(8):
-        value = int(input('Р’РІРµРґРёС‚Рµ Р·РЅР°С‡РµРЅРёРµ РєР»СЋС‡Р°'))
-        tree.add(value)
-        print("Value: ", value, ", ", tree.toTreeList(), ", root: ", tree.node.getValue())
+    values = list(range(16))
+    random.shuffle(values)
+
+    for i in range(16):
+        tree.add(values[i])
+
+    tree = [node.value for node in tree_to_list(tree.node)]
+    from drawtree import draw_bst
+    draw_bst(tree)
