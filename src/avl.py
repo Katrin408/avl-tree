@@ -21,7 +21,7 @@ class Node:
         right_height = self.right.height if self.right else 0
         self.height = 1 + max(left_height, right_height)
 
-    def get_balance_factor(self):
+    def balance_factor(self):
         return (self.right.height if self.right else 0) - \
                (self.left.height if self.left else 0)
 
@@ -92,13 +92,13 @@ class AVLTree:
 
     def balance(self, node):
         node.fix_height()
-        node_balance_factor = node.get_balance_factor()
+        node_balance_factor = node.balance_factor()
         if node_balance_factor == 2:
-            if node.right and (node.right.get_balance_factor() < 0):
+            if node.right and (node.right.balance_factor() < 0):
                 node.right = self.rotate_right(node.right)
             return self.rotate_left(node)
         if node_balance_factor == -2:
-            if node.left and (node.left.get_balance_factor() > 0):
+            if node.left and (node.left.balance_factor() > 0):
                 node.left = self.rotate_left(node.left)
             return self.rotate_right(node)
         return node
