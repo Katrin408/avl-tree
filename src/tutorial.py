@@ -14,7 +14,7 @@ from matplotlib.patches import Ellipse
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
 
-form_class = uic.loadUiType("mainwindow4.ui")[0]
+form_class = uic.loadUiType("mainwindow.ui")[0]
 
 
 class Window(QMainWindow, form_class):
@@ -35,7 +35,7 @@ class Window(QMainWindow, form_class):
         self.addToolBar(self.toolbar)
 
         self.AddButton.clicked.connect(self.AddButton_OnClick)
-        self.LineList.itemClicked.connect(self.LineList_OnClick)
+        #self.LineList.itemClicked.connect(self.LineList_OnClick)
 
 
 
@@ -52,8 +52,9 @@ class Window(QMainWindow, form_class):
 
 
     def AddButton_OnClick(self):
+        data = self.key.text()
 
-        self.axes.annotate("2",
+        self.axes.annotate(data,
                   xytext=(0.2, 0.2),
                   size=15, va="center", ha="center",
                   bbox=dict(boxstyle="circle", fc="w"),
