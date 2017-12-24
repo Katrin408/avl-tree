@@ -25,6 +25,9 @@ class Node:
         return (self.right.height if self.right else 0) - \
                (self.left.height if self.left else 0)
 
+    def __repr__(self):
+        return str(self.value)
+
 
 class AVLTree:
     def __init__(self):
@@ -47,6 +50,18 @@ class AVLTree:
         extract(node)
 
         return tree
+
+    def collect(self):
+        node = self.node
+        collected = [[node]]
+        while node:
+            level = []
+            for node in collected[-1]:
+                if node is None:
+                    return collected
+                level.extend([node.left, node.right])
+
+            collected.append(level)
 
     def insert(self, root, value):
         if not root:
@@ -96,3 +111,4 @@ if __name__ == "__main__":
         tree.add(i)
     tree_ = [node.value for node in tree.to_list()]
     draw_bst(tree_)
+    print(tree.collect())
