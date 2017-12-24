@@ -38,27 +38,26 @@ class Window(QMainWindow, form_class):
         self.LineList.itemClicked.connect(self.LineList_OnClick)
 
 
+
         self.axes.annotate("1",
-                  xy=(0.2, 0.2), xycoords='data',
-                  xytext=(0.8, 0.8), textcoords='data',
-                  size=20, va="center", ha="center",
+                  xytext=(0.8, 0.8),
+                  size=15, va="center", ha="center",
                   bbox=dict(boxstyle="circle", fc="w"),
-                  arrowprops=dict(arrowstyle="->",
-                                  connectionstyle="arc3,rad=-0.2",
-                                  fc="w"),)
+                  arrowprops=dict(arrowstyle="-", fc="w"), xy=(0.2, 0.2), )
 
 
 
         self.show()
 
+
+
     def AddButton_OnClick(self):
 
         self.axes.annotate("2",
-                           xy=(0.2, 0.2),
-                           xytext=(0.2, 0.2), textcoords='data',
-                           size=20, va="center", ha="center",
-                           bbox=dict(boxstyle="circle", fc="w"),
-                           )
+                  xytext=(0.2, 0.2),
+                  size=15, va="center", ha="center",
+                  bbox=dict(boxstyle="circle", fc="w"),
+                  arrowprops=dict(arrowstyle="-", fc="w"), xy=(0.2, 0.2), )
 
 
         self.canvas.draw()
