@@ -26,7 +26,7 @@ class Node:
                (self.left.height if self.left else 0)
 
     def __repr__(self):
-        return str(self.value)
+        return "Node(%s): left(%s), right(%s)" % (self, self.left, self.right)
 
 
 class AVLTree:
@@ -58,10 +58,13 @@ class AVLTree:
             level = []
             for node in collected[-1]:
                 if node is None:
-                    return collected
-                level.extend([node.left, node.right])
+                    level.extend([None, None])
+                else:
+                    level.extend([node.left, node.right])
 
             collected.append(level)
+
+        return collected
 
     @staticmethod
     def node_dict(coordinates):
