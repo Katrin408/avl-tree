@@ -21,7 +21,7 @@ class Window(QMainWindow, form_class):
         self.setupUi(self)
 
         self.axes = self.mpl_figure.add_subplot(111)
-
+        self.axes.axis('off')
 
         self.canvas = FigureCanvas(self.mpl_figure)
         self.mplVL.addWidget(self.canvas)
@@ -39,6 +39,11 @@ class Window(QMainWindow, form_class):
 
     def add_node(self):
         data = self.key.text()
+
+        if len(data) > 3:
+            print("This value is too long, tree will look ugly, use numbers lower then 999")
+            return
+
         self.key.clear()
         value = None
         try:
@@ -68,49 +73,20 @@ class Window(QMainWindow, form_class):
                 self.nodes.append(annotation)
                 continue
 
-            try:
+            if node.left:
+                left_data = options.copy()
+                left_node = new_tree.get(node.left)
+                left_data.update(xy=left_node['xytext'])
+                annotation = self.axes.annotate(node.value, **left_data)
+                self.nodes.append(annotation)
 
-                if node.left:
-                    left_data = options.copy()
-                    left_node = new_tree.get(node.left)
-                    #if not left_node:
-                        #continue
-                    left_data.update(xy=left_node['xytext'])
-                    annotation = self.axes.annotate(node.value, **left_data)
-                    self.nodes.append(annotation)
-            except Exception as e:
-                print("LEFT NodE")
-                print(e)
-
-
-            try:
-
-                if node.right:
-                    right_data = options.copy()
-                    right_node = new_tree.get(node.right)
-                    #if not right_node:
-                        #continue
-                    right_data.update(xy=right_node['xytext'])
-                    annotation = self.axes.annotate(node.value, **right_data)
-                    self.nodes.append(annotation)
-            except Exception as e:
-                print("RIGHT NODE")
-                print(e)
-                print(new_tree.keys())
-                print(node)
-
-
-        try:
-            nodes_drown = list(set(int(node._text) for node in self.nodes))
-            nodes_drown.sort()
-            #print(nodes_drown)
-            #print(sorted([node.value for node in new_tree.keys()]))
-            print('*' * 20)
-        except Exception as e:
-            print(e)
+            if node.right:
+                right_data = options.copy()
+                right_node = new_tree.get(node.right)
+                right_data.update(xy=right_node['xytext'])
+                annotation = self.axes.annotate(node.value, **right_data)
+                self.nodes.append(annotation)
         self.canvas.draw()
-
-        # 12,45,11,25,78,85,63,55,75,88,83,99,77(вот здесь у нас она типо вылетает), продолжаем вводить 80,84,86,99
 
 
 if __name__ == "__main__":
