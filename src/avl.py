@@ -63,6 +63,39 @@ class AVLTree:
 
             collected.append(level)
 
+    @staticmethod
+    def node_dict(coordinates, value):
+        return str(value), dict(
+            xy=coordinates,
+            xytext=coordinates,
+            size=15,
+            va="center",
+            ha="center",
+            bbox=dict(boxstyle="circle", fc="w")
+        )
+
+    def nodes_as_annotations(self):
+        max_width = 100
+        max_height = 90
+
+        collected_tree = self.collect()
+        new_tree = []
+        depth = len(collected_tree)
+        width = len(collected_tree[-1])
+
+        v_space = max_height / depth
+
+        for i, level in enumerate(collected_tree):
+            elements = len(level)
+            node_h = v_space * (i + 1)
+            h_space = max_width / (elements + 1)
+            for j, node in enumerate(level):
+                node_w = h_space * (j + 1)
+                if node is not None:
+                    new_tree.append(AVLTree.node_dict((node_w / 100, 1 - node_h / 100), node.value))
+
+        return new_tree
+
     def insert(self, root, value):
         if not root:
             return Node(value)

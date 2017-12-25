@@ -8,11 +8,14 @@ Created on Fri Oct 13 18:09:33 2017
 import sys
 from PyQt5 import uic
 from PyQt5.QtWidgets import QMainWindow, QApplication
-import matplotlib
 from matplotlib.figure import Figure
-from matplotlib.patches import Ellipse
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
+
+from avl import AVLTree
+
+
+from drawtree import draw_bst
 
 form_class = uic.loadUiType("mainwindow.ui")[0]
 
@@ -34,38 +37,39 @@ class Window(QMainWindow, form_class):
         self.toolbar = NavigationToolbar(self.canvas, self, coordinates=True)
         self.addToolBar(self.toolbar)
 
-        self.AddButton.clicked.connect(self.AddButton_OnClick)
-        #self.LineList.itemClicked.connect(self.LineList_OnClick)
+        self.add_button.clicked.connect(self.add_node)
 
-
-
-        self.axes.annotate("1",
-                  xytext=(0.8, 0.8),
-                  size=15, va="center", ha="center",
-                  bbox=dict(boxstyle="circle", fc="w"),
-                  arrowprops=dict(arrowstyle="-", fc="w"), xy=(0.2, 0.2), )
-
-
+        self.tree = AVLTree()
+        self.nodes = []
 
         self.show()
 
-
-
-    def AddButton_OnClick(self):
+    def add_node(self):
         data = self.key.text()
+        self.key.clear()
+        value = None
+        try:
+            value = int(data)
+        except ValueError:
+            print("Wrong node value inserted. Expected int, got %s" % (type(value)))
+            return
 
-        self.axes.annotate(data,
-                  xytext=(0.2, 0.2),
-                  size=15, va="center", ha="center",
-                  bbox=dict(boxstyle="circle", fc="w"),
-                  arrowprops=dict(arrowstyle="-", fc="w"), xy=(0.2, 0.2), )
+        self.tree.add(value)
 
+        # clean up old annotations
+        for node in self.nodes:
+            node.remove()
+        self.nodes.clear()
+
+        new_tree = self.tree.nodes_as_annotations()
+
+        for node in new_tree:
+            value = node[0]
+            options = node[1]
+            annotation = self.axes.annotate(value, **options)
+            self.nodes.append(annotation)
 
         self.canvas.draw()
-
-    def LineList_OnClick(self, item):
-        self.canvas.draw()
-
 
 def run():
     app = QApplication(sys.argv)

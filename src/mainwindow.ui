@@ -53,7 +53,7 @@
           <number>380</number>
          </property>
          <item row="5" column="1">
-          <widget class="QPushButton" name="AddButton">
+          <widget class="QPushButton" name="add_button">
            <property name="text">
             <string>Add key</string>
            </property>
