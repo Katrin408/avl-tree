@@ -32,6 +32,7 @@ class Window(QMainWindow, form_class):
 
         self.tree = AVLTree()
         self.nodes = []
+        self.values = set()
 
         self.show()
 
@@ -42,7 +43,13 @@ class Window(QMainWindow, form_class):
         try:
             value = int(data)
         except ValueError:
-            print("Wrong node value inserted. Expected int, got %s" % (type(value)))
+            print("Wrong node value inserted. %s is not integer" % (data))
+            return
+
+        if value not in self.values:
+            self.values.add(value)
+        else:
+            print("%d is already in tree" % value)
             return
 
         self.tree.add(value)
@@ -54,11 +61,32 @@ class Window(QMainWindow, form_class):
 
         new_tree = self.tree.nodes_as_annotations()
 
-        for node in new_tree:
-            value = node[0]
-            options = node[1]
-            annotation = self.axes.annotate(value, **options)
-            self.nodes.append(annotation)
+        for node, options in new_tree.items():
+            if not (node.left or node.right):
+                annotation = self.axes.annotate(node.value, **options)
+                self.nodes.append(annotation)
+                self.canvas.draw()
+                continue
+
+            if node.left:
+                left_data = options.copy()
+                left_node = new_tree.get(node.left)
+                if not left_node:
+                    continue
+                left_data.update(xy=left_node['xytext'])
+                annotation = self.axes.annotate(node.value, **left_data)
+                self.nodes.append(annotation)
+                self.canvas.draw()
+
+            if node.right:
+                right_data = options.copy()
+                right_node = new_tree.get(node.right)
+                if not right_node:
+                    continue
+                right_data.update(xy=right_node['xytext'])
+                annotation = self.axes.annotate(node.value, **right_data)
+                self.nodes.append(annotation)
+                self.canvas.draw()
 
         self.canvas.draw()
 
