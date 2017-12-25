@@ -1,9 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Fri Oct 13 18:09:33 2017
-
-@author: KandK
-"""
 
 import sys
 from PyQt5 import uic
@@ -11,11 +6,7 @@ from PyQt5.QtWidgets import QMainWindow, QApplication
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
-
 from avl import AVLTree
-
-
-from drawtree import draw_bst
 
 form_class = uic.loadUiType("mainwindow.ui")[0]
 
@@ -71,12 +62,8 @@ class Window(QMainWindow, form_class):
 
         self.canvas.draw()
 
-def run():
-    app = QApplication(sys.argv)
-
-    Window()
-    sys.exit(app.exec_())
-
 
 if __name__ == "__main__":
-    run()
+    app = QApplication(sys.argv)
+    Window()
+    sys.exit(app.exec_())
