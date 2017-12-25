@@ -19,6 +19,7 @@ class Window(QMainWindow, form_class):
     def __init__(self):
         super(Window, self).__init__()
         self.setupUi(self)
+        self.setWindowTitle("Demchenko - Self Balanced AVLTree")
 
         self.axes = self.mpl_figure.add_subplot(111)
         self.axes.axis('off')
