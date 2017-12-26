@@ -139,13 +139,3 @@ class AVLTree:
                 node.left = self.rotate_left(node.left)
             return self.rotate_right(node)
         return node
-
-
-if __name__ == "__main__":
-    from drawtree import draw_bst
-    tree = AVLTree()
-    for i in range(16):
-        tree.add(i)
-    tree_ = [node.value for node in tree.to_list()]
-    draw_bst(tree_)
-    print(tree.collect())
